@@ -3,3 +3,4 @@
  */
 
 export * from './lib/ngrx-cognito.module';
+export { cognitoReducer, CognitoState } from './lib/state/cognito.reducer';

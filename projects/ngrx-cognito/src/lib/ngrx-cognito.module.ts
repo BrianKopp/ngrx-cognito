@@ -9,9 +9,10 @@ import { cognitoReducer } from './state/cognito.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { CognitoEffects } from './state/cognito.effects';
 import { CognitoFacade } from './state/cognito.facade';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [StoreModule.forFeature('cognito', cognitoReducer), EffectsModule.forFeature([CognitoEffects])],
+  imports: [RouterModule, StoreModule.forFeature('cognito', cognitoReducer), EffectsModule.forFeature([CognitoEffects])],
   declarations: [],
   exports: []
 })
@@ -23,6 +24,7 @@ export class NgrxCognitoModule {
         RequireLoggedInGuardService,
         RequireLoggedOutGuardService,
         CognitoFacade,
+        RouterModule,
         { provide: CognitoConfigService, useValue: cognitoConfig }
       ]
     };

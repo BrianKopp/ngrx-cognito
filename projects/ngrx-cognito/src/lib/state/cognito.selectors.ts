@@ -4,7 +4,7 @@ import { CognitoStates } from '../model';
 import { MemoizedSelector } from '@ngrx/store';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 
-const getCognito = createFeatureSelector<CognitoState>('auth');
+const getCognito = createFeatureSelector<CognitoState>('cognito');
 
 const getCognitoState = createSelector(
   getCognito,
