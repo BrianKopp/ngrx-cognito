@@ -121,6 +121,46 @@
           }
         }
       }
+    },
+    "ngrx-cognito": {
+      "root": "projects/ngrx-cognito",
+      "sourceRoot": "projects/ngrx-cognito/src",
+      "projectType": "library",
+      "prefix": "cog",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngrx-cognito/tsconfig.lib.json",
+            "project": "projects/ngrx-cognito/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngrx-cognito/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngrx-cognito/src/test.ts",
+            "tsConfig": "projects/ngrx-cognito/tsconfig.spec.json",
+            "karmaConfig": "projects/ngrx-cognito/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngrx-cognito/tsconfig.lib.json",
+              "projects/ngrx-cognito/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngrx-cognito-app"
