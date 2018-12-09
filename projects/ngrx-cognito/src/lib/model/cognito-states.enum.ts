@@ -1,4 +1,4 @@
-export enum AuthStates {
+export enum CognitoStates {
   NOT_LOGGED_IN = 'NOT_LOGGED_IN',
   LOGGED_IN = 'LOGGED_IN',
   REQUIRE_MFA = 'REQUIRE_MFA',

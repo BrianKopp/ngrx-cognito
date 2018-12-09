@@ -6,6 +6,8 @@
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
   },
   "dependencies": {
+    "@ngrx/effects": "^6.1.2",
+    "@ngrx/store": "^6.1.2",
     "amazon-cognito-identity-js": "^2.0.30"
   }
 }

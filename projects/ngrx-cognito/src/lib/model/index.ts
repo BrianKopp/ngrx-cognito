@@ -1,5 +1,5 @@
-export * from './auth-states.enum';
 export * from './cognito-config';
+export * from './cognito-states.enum';
 export * from './confirmation-code-response';
 export * from './load-user-from-storage-response';
 export * from './login-response';
