@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { CognitoUser } from 'amazon-cognito-identity-js';
 import { CognitoState } from './cognito.reducer';
 import {
   getUser,
   getErrorMessage,
   getAccessToken,
   getIdToken,
-  getAuthCurrentState,
+  getCognitoCurrentState,
   getIsLoadingLogin,
   getIsLoadingSignup,
   getIsLoadingMfa,
   getIsLoadingConfirmationCode,
   getIsLoadingLogout,
   getIsLoadingNewPassword,
-  getAuthCurrentStateIsLoggedIn
+  getCognitoCurrentStateIsLoggedIn
 } from './cognito.selectors';
 import { LoginAction, SubmitConfirmationCodeAction, SignupAction, LogoutAction } from './cognito.actions';
+// imported explicitly for build
+import { Observable } from 'rxjs';
+import { CognitoUser } from 'amazon-cognito-identity-js';
+import { CognitoStates } from '../model';
 
 @Injectable()
 export class CognitoFacade {
@@ -25,8 +27,8 @@ export class CognitoFacade {
   errorMessage$ = this.store.pipe(select(getErrorMessage));
   accessToken$ = this.store.pipe(select(getAccessToken));
   idToken$ = this.store.pipe(select(getIdToken));
-  authCurrentState$ = this.store.pipe(select(getAuthCurrentState));
-  isLoggedIn$ = this.store.pipe(select(getAuthCurrentStateIsLoggedIn));
+  authCurrentState$ = this.store.pipe(select(getCognitoCurrentState));
+  isLoggedIn$ = this.store.pipe(select(getCognitoCurrentStateIsLoggedIn));
   isLoadingLogin$ = this.store.pipe(select(getIsLoadingLogin));
   isLoadingSignup$ = this.store.pipe(select(getIsLoadingSignup));
   isLoadingMfa$ = this.store.pipe(select(getIsLoadingMfa));

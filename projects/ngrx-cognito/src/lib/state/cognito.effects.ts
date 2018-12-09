@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, switchMap, catchError, withLatestFrom, tap } from 'rxjs/operators';
-import { of, defer } from 'rxjs';
+import { of, defer, Observable, Subscription } from 'rxjs';
 
 import { CognitoService } from '../services/cognito.service';
 import * as cog from './cognito.actions';

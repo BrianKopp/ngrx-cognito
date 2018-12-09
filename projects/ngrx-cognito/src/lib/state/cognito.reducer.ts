@@ -36,7 +36,7 @@ export const initialState: CognitoState = {
   authState: CognitoStates.NOT_LOGGED_IN
 };
 
-export function authReducer(state = initialState, action: CognitoActions): CognitoState {
+export function cognitoReducer(state = initialState, action: CognitoActions): CognitoState {
   switch (action.type) {
     case CognitoActionTypes.LOGIN_WAITING:
       return {

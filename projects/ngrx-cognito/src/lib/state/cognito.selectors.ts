@@ -1,6 +1,8 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { CognitoState } from './cognito.reducer';
 import { CognitoStates } from '../model';
+import { MemoizedSelector } from '@ngrx/store';
+import { CognitoUser } from 'amazon-cognito-identity-js';
 
 const getCognito = createFeatureSelector<CognitoState>('auth');
 
@@ -25,11 +27,11 @@ export const getIdToken = createSelector(
   getCognitoState,
   state => state.idToken
 );
-export const getAuthCurrentState = createSelector(
+export const getCognitoCurrentState = createSelector(
   getCognitoState,
   state => state.authState
 );
-export const getAuthCurrentStateIsLoggedIn = createSelector(
+export const getCognitoCurrentStateIsLoggedIn = createSelector(
   getCognitoState,
   state => state.authState === CognitoStates.LOGGED_IN
 );
