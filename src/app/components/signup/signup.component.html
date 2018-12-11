@@ -1,0 +1,6 @@
+<ng-container *ngIf="(cognitoState$ | async) === cognitoStates.NOT_LOGGED_IN">
+  <app-signup-form [errorMessage]="errorMessage$ | async" (submitted)="onSubmitSignUp($event)"></app-signup-form>
+</ng-container>
+<ng-container *ngIf="(cognitoState$ | async) === cognitoStates.REQUIRE_CONFIRMATION">
+  <app-confirmation-code-form (submitEvent)="onSubmitConfirmationCode($event)"></app-confirmation-code-form>
+</ng-container>

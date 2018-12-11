@@ -22,18 +22,19 @@ import {
   providedIn: 'root'
 })
 export class CognitoService {
-  private poolData: { ClientId: string; UserPoolId: string };
-  constructor(@Inject(CognitoConfigService) private _: CognitoConfig) {
-    this.poolData = {
-      ClientId: _.cognitoAppClientId,
-      UserPoolId: _.cognitoUserPoolId
+  constructor(@Inject(CognitoConfigService) private config: CognitoConfig) {}
+
+  private poolData() {
+    return {
+      ClientId: this.config.cognitoAppClientId,
+      UserPoolId: this.config.cognitoUserPoolId
     };
   }
 
   createUserWithCredentials(username: string): CognitoUser {
     return new CognitoUser({
       Username: username,
-      Pool: new CognitoUserPool(this.poolData)
+      Pool: new CognitoUserPool(this.poolData())
     });
   }
 
@@ -120,7 +121,7 @@ export class CognitoService {
     attributes?: { [key: string]: string }
   ): Observable<SignupResponse> {
     return Observable.create((signupSubject: Subject<SignupResponse>) => {
-      const poolData = new CognitoUserPool(this.poolData);
+      const poolData = new CognitoUserPool(this.poolData());
       const attributeList = [
         new CognitoUserAttribute({
           Name: 'email',
@@ -175,7 +176,7 @@ export class CognitoService {
 
   loadUserFromStorage(): Observable<LoadUserFromStorageResponse> {
     return Observable.create((loadUserSubject: Subject<LoadUserFromStorageResponse>) => {
-      const userPool = new CognitoUserPool(this.poolData);
+      const userPool = new CognitoUserPool(this.poolData());
       const cognitoUser = userPool.getCurrentUser();
       if (cognitoUser) {
         cognitoUser.getSession((err: Error, session: CognitoUserSession) => {

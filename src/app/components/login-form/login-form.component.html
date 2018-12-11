@@ -1,0 +1,12 @@
+<form [formGroup]="loginForm" (submit)="submitForm()">
+  <p><label>Username</label> <input type="text" placeholder="Username" formControlName="username" autocomplete="username" /></p>
+  <p>
+    <label>Password</label>
+    <input type="password" placeholder="Password" formControlName="password" autocomplete="current-password" />
+  </p>
+  <ng-container *ngIf="errorMessage">
+    <h3>Error Message</h3>
+    <p>{{ errorMessage }}</p>
+  </ng-container>
+  <button type="submit">Submit</button>
+</form>

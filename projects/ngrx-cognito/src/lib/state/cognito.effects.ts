@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -14,8 +14,10 @@ import {
   SignupResponse,
   ConfirmationCodeResponse,
   LoginResponse,
-  LoadUserFromStorageResponse
+  LoadUserFromStorageResponse,
+  CognitoConfig
 } from '../model';
+import { CognitoConfigService } from '../services/cognito-config.service';
 
 @Injectable()
 export class CognitoEffects {
@@ -24,7 +26,8 @@ export class CognitoEffects {
     private store: Store<CognitoState>,
     private cognitoService: CognitoService,
     private authFacade: CognitoFacade,
-    private router: Router
+    private router: Router,
+    @Inject(CognitoConfigService) private config: CognitoConfig
   ) {}
 
   @Effect()
@@ -58,6 +61,10 @@ export class CognitoEffects {
       );
     })
   );
+
+  loginSuccess$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.LOGIN_SUCCESS)).subscribe(_ => {
+    this.router.navigate([this.config.loginDidSucceedUrl]);
+  });
 
   @Effect()
   signup$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.SIGNUP)).pipe(
@@ -96,7 +103,7 @@ export class CognitoEffects {
   );
 
   logoutSuccess$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.LOGOUT_SUCCESS)).subscribe(_ => {
-    this.router.navigate(['/login']);
+    this.router.navigate([this.config.logoutDidSucceedUrl]);
   });
 
   @Effect()
@@ -120,8 +127,8 @@ export class CognitoEffects {
 
   submitConfirmationCodeSuccess$ = this.actions$
     .pipe(ofType(cog.CognitoActionTypes.SUBMIT_CONFIRMATION_CODE_SUCCESS))
-    .subscribe((action: cog.SubmitConfirmationCodeSuccessAction) => {
-      this.router.navigate(['']);
+    .subscribe((_: cog.SubmitConfirmationCodeSuccessAction) => {
+      this.router.navigate([this.config.loginDidSucceedUrl]);
     });
 
   @Effect()

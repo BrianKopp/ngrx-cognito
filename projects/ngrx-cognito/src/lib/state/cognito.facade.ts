@@ -27,7 +27,7 @@ export class CognitoFacade {
   errorMessage$ = this.store.pipe(select(getErrorMessage));
   accessToken$ = this.store.pipe(select(getAccessToken));
   idToken$ = this.store.pipe(select(getIdToken));
-  authCurrentState$ = this.store.pipe(select(getCognitoCurrentState));
+  cognitoCurrentState$ = this.store.pipe(select(getCognitoCurrentState));
   isLoggedIn$ = this.store.pipe(select(getCognitoCurrentStateIsLoggedIn));
   isLoadingLogin$ = this.store.pipe(select(getIsLoadingLogin));
   isLoadingSignup$ = this.store.pipe(select(getIsLoadingSignup));

@@ -1,0 +1,26 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p><label>Username</label> <input type="text" placeholder="Username" formControlName="username" autocomplete="username" /></p>
+    <p>
+      <label>First Name</label>
+      <input type="text" placeholder="First name" formControlName="lastName" autocomplete="given-name" />
+    </p>
+    <p>
+      <label>Last Name</label>
+      <input type="text" placeholder="Last name" formControlName="firstName" autocomplete="family-name" />
+    </p>
+    <p><label>Email Address</label> <input type="email" placeholder="Email" formControlName="email" autocomplete="email" /></p>
+    <p>
+      <label>Password</label>
+      <input type="password" placeholder="Password" formControlName="password" autocomplete="new-password" />
+    </p>
+    <p>
+      <label>Confirm Password</label>
+      <input type="password" placeholder="Confirm Pasword" formControlName="passwordConfirm" autocomplete="new-password" />
+    </p>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p class="registerButtons">
+      <button type="submit">Sign-up</button> <button type="button" routerLink="/login">Log In (already signed up)</button>
+    </p>
+  </form>
+</div>

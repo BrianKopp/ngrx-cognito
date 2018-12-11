@@ -29,11 +29,11 @@ export const getIdToken = createSelector(
 );
 export const getCognitoCurrentState = createSelector(
   getCognitoState,
-  state => state.authState
+  state => state.cognitoState
 );
 export const getCognitoCurrentStateIsLoggedIn = createSelector(
   getCognitoState,
-  state => state.authState === CognitoStates.LOGGED_IN
+  state => state.cognitoState === CognitoStates.LOGGED_IN
 );
 export const getIsLoadingLogin = createSelector(
   getCognitoState,

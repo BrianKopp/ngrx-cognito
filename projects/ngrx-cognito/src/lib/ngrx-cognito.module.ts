@@ -1,23 +1,29 @@
-import { NgModule } from '@angular/core';
-import { CognitoConfig } from './model';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { RequireLoggedInGuardService } from './services/require-logged-in-guard.service';
 import { RequireLoggedOutGuardService } from './services/require-logged-out-guard.service';
-import { CognitoConfigService } from './services/cognito-config.service';
-import { StoreModule } from '@ngrx/store';
-import { cognitoReducer } from './state/cognito.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { CognitoEffects } from './state/cognito.effects';
 import { CognitoFacade } from './state/cognito.facade';
-import { RouterModule } from '@angular/router';
+import { CognitoConfigService } from './services/cognito-config.service';
+import { CognitoConfig } from './model';
+import { cognitoReducer } from './state/cognito.reducer';
+import { CognitoEffects } from './state/cognito.effects';
 
 @NgModule({
-  imports: [RouterModule, StoreModule.forFeature('cognito', cognitoReducer), EffectsModule.forFeature([CognitoEffects])],
   declarations: [],
+  imports: [StoreModule.forFeature('cognito', cognitoReducer), EffectsModule.forFeature([CognitoEffects])],
   exports: []
 })
 export class NgrxCognitoModule {
   static forRoot(cognitoConfig: CognitoConfig): ModuleWithProviders {
+    const scrubbedConfig: CognitoConfig = {
+      ...cognitoConfig,
+      loginRequiredUrl: cognitoConfig.loginRequiredUrl || '/login',
+      loginDidSucceedUrl: cognitoConfig.loginDidSucceedUrl || '/',
+      logoutRequiredUrl: cognitoConfig.logoutRequiredUrl || '/',
+      logoutDidSucceedUrl: cognitoConfig.logoutDidSucceedUrl || '/'
+    };
     return {
       ngModule: NgrxCognitoModule,
       providers: [
@@ -25,7 +31,7 @@ export class NgrxCognitoModule {
         RequireLoggedOutGuardService,
         CognitoFacade,
         RouterModule,
-        { provide: CognitoConfigService, useValue: cognitoConfig }
+        { provide: CognitoConfigService, useValue: scrubbedConfig }
       ]
     };
   }

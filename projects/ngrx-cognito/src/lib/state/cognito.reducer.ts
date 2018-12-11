@@ -16,7 +16,7 @@ export interface CognitoState {
     logout: boolean;
     newPassword: boolean;
   };
-  authState: CognitoStates;
+  cognitoState: CognitoStates;
 }
 
 export const initialState: CognitoState = {
@@ -33,7 +33,7 @@ export const initialState: CognitoState = {
     logout: false,
     newPassword: false
   },
-  authState: CognitoStates.NOT_LOGGED_IN
+  cognitoState: CognitoStates.NOT_LOGGED_IN
 };
 
 export function cognitoReducer(state = initialState, action: CognitoActions): CognitoState {
@@ -52,7 +52,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
       return {
         ...state,
         authDetails: null,
-        authState: CognitoStates.LOGGED_IN,
+        cognitoState: CognitoStates.LOGGED_IN,
         user: action.payload.user,
         accessToken: action.payload.accessToken,
         idToken: action.payload.idToken
@@ -61,7 +61,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
       return {
         ...state,
         authDetails: null,
-        authState: CognitoStates.LOGGED_IN,
+        cognitoState: CognitoStates.LOGGED_IN,
         isLoading: {
           ...state.isLoading,
           login: false
@@ -90,7 +90,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
       return {
         ...state,
         user: action.payload.cognitoUser,
-        authState: CognitoStates.LOGGED_IN,
+        cognitoState: CognitoStates.LOGGED_IN,
         isLoading: {
           ...state.isLoading,
           signup: false
@@ -109,7 +109,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
     case CognitoActionTypes.REQUIRE_MFA:
       return {
         ...state,
-        authState: CognitoStates.REQUIRE_MFA,
+        cognitoState: CognitoStates.REQUIRE_MFA,
         isLoading: {
           ...state.isLoading,
           login: false,
@@ -119,7 +119,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
     case CognitoActionTypes.REQUIRE_USER_CONFIRMATION:
       return {
         ...state,
-        authState: CognitoStates.REQUIRE_CONFIRMATION,
+        cognitoState: CognitoStates.REQUIRE_CONFIRMATION,
         isLoading: {
           ...state.isLoading,
           login: false,
@@ -129,7 +129,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
     case CognitoActionTypes.REQUIRE_NEW_PASSWORD:
       return {
         ...state,
-        authState: CognitoStates.REQUIRE_NEW_PASSWORD,
+        cognitoState: CognitoStates.REQUIRE_NEW_PASSWORD,
         isLoading: {
           ...state.isLoading,
           login: false,
@@ -147,7 +147,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
     case CognitoActionTypes.SUBMIT_CONFIRMATION_CODE_SUCCESS:
       return {
         ...state,
-        authState: CognitoStates.LOGGED_IN,
+        cognitoState: CognitoStates.LOGGED_IN,
         isLoading: {
           ...state.isLoading,
           confirmationCode: false
