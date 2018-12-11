@@ -25,7 +25,7 @@ export class CognitoEffects {
     private actions$: Actions,
     private store: Store<CognitoState>,
     private cognitoService: CognitoService,
-    private authFacade: CognitoFacade,
+    private cognitoFacade: CognitoFacade,
     private router: Router,
     @Inject(CognitoConfigService) private config: CognitoConfig
   ) {}
@@ -93,7 +93,7 @@ export class CognitoEffects {
 
   @Effect()
   logout$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.LOGOUT)).pipe(
-    withLatestFrom(this.authFacade.cognitoUser$),
+    withLatestFrom(this.cognitoFacade.cognitoUser$),
     tap(([_, user]) => {
       this.cognitoService.logoutUser(user);
     }),
@@ -109,7 +109,7 @@ export class CognitoEffects {
   @Effect()
   submitConfirmationCode$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.SUBMIT_CONFIRMATION_CODE)).pipe(
     map((action: cog.SubmitConfirmationCodeAction) => action.payload.confirmationCode),
-    withLatestFrom(this.authFacade.cognitoUser$),
+    withLatestFrom(this.cognitoFacade.cognitoUser$),
     switchMap(([code, user]) => {
       return this.cognitoService.submitConfirmationCode(user, code).pipe(
         map((response: ConfirmationCodeResponse) => {
@@ -134,7 +134,7 @@ export class CognitoEffects {
   @Effect()
   submitMfaCode$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.SUBMIT_MFA)).pipe(
     map((action: cog.SubmitMFACodeAction) => action.payload.mfaCode),
-    withLatestFrom(this.authFacade.cognitoUser$),
+    withLatestFrom(this.cognitoFacade.cognitoUser$),
     switchMap(([code, user]) => {
       return this.cognitoService.submitMfaCode(user, code).pipe(
         map((response: LoginResponse) => {

@@ -1,12 +1,22 @@
 {
   "name": "ngrx-cognito",
+  "description": "Cognito workflow in a simple API, maintained in ngrx",
   "version": "0.0.1",
+  "author": "Brian Kopp",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/briankopp/ngrx-cognito.git"
+  },
+  "bugs": {
+    "url": "https://github.com/briankopp/ngrx-cognito/issues"
+  },
+  "homepage": "https://github.com/briankopp/ngrx-cognito",
   "peerDependencies": {
     "@angular/common": "^7.1.2",
     "@angular/core": "^7.1.2",
     "@ngrx/effects": "^6.1.2",
     "@ngrx/store": "^6.1.2",
     "amazon-cognito-identity-js": "^3.0.5"
-  },
-  "dependencies": {}
+  }
 }
