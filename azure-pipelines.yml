@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  - master
+  - dev
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -28,6 +28,6 @@ steps:
     displayName: 'ng lint'
 
   - script: |
-      ng test ngrx-cognito
-      ng test
+      ng test ngrx-cognito --watch=false --browsers=ChromeHeadless
+      ng test --watch=false --browsers=ChromeHeadless
     displayName: 'ng test'
