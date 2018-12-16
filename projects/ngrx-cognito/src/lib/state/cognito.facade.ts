@@ -13,7 +13,10 @@ import {
   getIsLoadingConfirmationCode,
   getIsLoadingLogout,
   getIsLoadingNewPassword,
-  getCognitoCurrentStateIsLoggedIn
+  getCognitoCurrentStateIsLoggedIn,
+  getUserAttributes,
+  getIsLoadingAttributes,
+  getUserId
 } from './cognito.selectors';
 import { LoginAction, SubmitConfirmationCodeAction, SignupAction, LogoutAction } from './cognito.actions';
 // imported explicitly for build
@@ -24,6 +27,8 @@ import { CognitoStates } from '../model';
 @Injectable()
 export class CognitoFacade {
   cognitoUser$ = this.store.pipe(select(getUser));
+  userId$ = this.store.pipe(select(getUserId));
+  userAttributes$ = this.store.pipe(select(getUserAttributes));
   errorMessage$ = this.store.pipe(select(getErrorMessage));
   accessToken$ = this.store.pipe(select(getAccessToken));
   idToken$ = this.store.pipe(select(getIdToken));
@@ -35,6 +40,7 @@ export class CognitoFacade {
   isLoadingConfirmationCode$ = this.store.pipe(select(getIsLoadingConfirmationCode));
   isLoadingLogout$ = this.store.pipe(select(getIsLoadingLogout));
   isLoadingNewPassword$ = this.store.pipe(select(getIsLoadingNewPassword));
+  isLoadingAttributes$ = this.store.pipe(select(getIsLoadingAttributes));
   constructor(private store: Store<CognitoState>) {}
 
   loginUser(username: string, password: string) {

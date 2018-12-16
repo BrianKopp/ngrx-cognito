@@ -4,6 +4,7 @@ import { CognitoActions, CognitoActionTypes } from './cognito.actions';
 
 export interface CognitoState {
   user: CognitoUser | null;
+  userAttributes: { [key: string]: any };
   authDetails: AuthenticationDetails | null;
   errorMessage: string;
   accessToken: string;
@@ -15,12 +16,14 @@ export interface CognitoState {
     confirmationCode: boolean;
     logout: boolean;
     newPassword: boolean;
+    attributes: boolean;
   };
   cognitoState: CognitoStates;
 }
 
 export const initialState: CognitoState = {
   user: null,
+  userAttributes: null,
   authDetails: null,
   errorMessage: null,
   accessToken: null,
@@ -31,7 +34,8 @@ export const initialState: CognitoState = {
     mfa: false,
     confirmationCode: false,
     logout: false,
-    newPassword: false
+    newPassword: false,
+    attributes: false
   },
   cognitoState: CognitoStates.NOT_LOGGED_IN
 };
@@ -61,6 +65,7 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
       return {
         ...state,
         authDetails: null,
+        user: action.payload.user,
         cognitoState: CognitoStates.LOGGED_IN,
         isLoading: {
           ...state.isLoading,
@@ -210,6 +215,36 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
         isLoading: {
           ...state.isLoading,
           newPassword: false
+        }
+      };
+    case CognitoActionTypes.GET_USER_ATTRIBUTES:
+      return {
+        ...state,
+        errorMessage: null,
+        userAttributes: null,
+        isLoading: {
+          ...state.isLoading,
+          attributes: true
+        }
+      };
+    case CognitoActionTypes.GET_USER_ATTRIBUTES_SUCCESS:
+      return {
+        ...state,
+        errorMessage: null,
+        userAttributes: action.payload.attributes,
+        isLoading: {
+          ...state.isLoading,
+          attributes: false
+        }
+      };
+    case CognitoActionTypes.GET_USER_ATTRIBUTES_FAILURE:
+      return {
+        ...state,
+        errorMessage: action.payload.errorMessage,
+        userAttributes: null,
+        isLoading: {
+          ...state.isLoading,
+          attributes: false
         }
       };
     case CognitoActionTypes.LOGOUT:

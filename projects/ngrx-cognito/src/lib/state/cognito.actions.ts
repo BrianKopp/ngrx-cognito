@@ -30,6 +30,10 @@ export enum CognitoActionTypes {
   SUBMIT_NEW_PASSWORD_SUCCESS = '[Cognito] Submit New Password Success',
   SUBMIT_NEW_PASSWORD_FAILURE = '[Cognito] Submit New Password Failure',
 
+  GET_USER_ATTRIBUTES = '[Cognito] Get User Attributes',
+  GET_USER_ATTRIBUTES_SUCCESS = '[Cognito] Get User Attributes Success',
+  GET_USER_ATTRIBUTES_FAILURE = '[Cognito] Get User Attributes Failure',
+
   LOGOUT = '[Cognito] Logout',
   LOGOUT_SUCCESS = '[Cognito] Logout SUccess'
 }
@@ -50,7 +54,7 @@ export class LoginWaitingAction implements Action {
 
 export class LoginSuccessAction implements Action {
   readonly type = CognitoActionTypes.LOGIN_SUCCESS;
-  constructor(public payload: { redirectUrl?: string }) {}
+  constructor(public payload: { user: CognitoUser; redirectUrl?: string }) {}
 }
 
 export class LoginFailureAction implements Action {
@@ -100,7 +104,7 @@ export class SubmitMFACodeAction implements Action {
 
 export class SubmitMFACodeSuccessAction implements Action {
   readonly type = CognitoActionTypes.SUBMIT_MFA_SUCCESS;
-  constructor() {}
+  constructor(public payload: { user: CognitoUser }) {}
 }
 
 export class SubmitMFACodeFailureInvalidAction implements Action {
@@ -115,7 +119,7 @@ export class SubmitConfirmationCodeAction implements Action {
 
 export class SubmitConfirmationCodeSuccessAction implements Action {
   readonly type = CognitoActionTypes.SUBMIT_CONFIRMATION_CODE_SUCCESS;
-  constructor() {}
+  constructor(public payload: { user: CognitoUser }) {}
 }
 
 export class SubmitConfirmationCodeFailureAction implements Action {
@@ -135,6 +139,21 @@ export class SubmitNewPasswordSuccessAction implements Action {
 
 export class SubmitNewPasswordFailureAction implements Action {
   readonly type = CognitoActionTypes.SUBMIT_NEW_PASSWORD_FAILURE;
+  constructor(public payload: { errorMessage: string }) {}
+}
+
+export class GetUserAttributesAction implements Action {
+  readonly type = CognitoActionTypes.GET_USER_ATTRIBUTES;
+  constructor() {}
+}
+
+export class GetUserAttributesSuccessAction implements Action {
+  readonly type = CognitoActionTypes.GET_USER_ATTRIBUTES_SUCCESS;
+  constructor(public payload: { attributes: { [key: string]: any } }) {}
+}
+
+export class GetUserAttributesFailureAction implements Action {
+  readonly type = CognitoActionTypes.GET_USER_ATTRIBUTES_FAILURE;
   constructor(public payload: { errorMessage: string }) {}
 }
 
@@ -170,5 +189,8 @@ export type CognitoActions =
   | SubmitNewPasswordAction
   | SubmitNewPasswordSuccessAction
   | SubmitNewPasswordFailureAction
+  | GetUserAttributesAction
+  | GetUserAttributesSuccessAction
+  | GetUserAttributesFailureAction
   | LogoutAction
   | LogoutSuccessAction;

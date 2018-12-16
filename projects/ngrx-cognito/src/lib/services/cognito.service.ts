@@ -203,7 +203,7 @@ export class CognitoService {
         if (err) {
           confirmationSubject.next({ errorMessage: err, success: false });
         } else {
-          confirmationSubject.next({ success: true });
+          confirmationSubject.next({ success: true, user: user });
         }
       });
     });
@@ -224,6 +224,22 @@ export class CognitoService {
           confirmationSubject.next({
             code: LoginResponseCodes.MFA_REQUIRED
           });
+        }
+      });
+    });
+  }
+
+  getUserAttributes(user: CognitoUser): Observable<{ [key: string]: any }> {
+    return Observable.create((subject: Subject<{ [key: string]: any }>) => {
+      user.getUserAttributes((err: Error, result: CognitoUserAttribute[]) => {
+        if (err) {
+          subject.error(err);
+        } else {
+          const attributes: { [key: string]: any } = {};
+          result.forEach(r => {
+            attributes[r.getName()] = r.getValue();
+          });
+          subject.next(attributes);
         }
       });
     });

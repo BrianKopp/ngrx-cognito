@@ -43,7 +43,7 @@ export class CognitoEffects {
         map(response => {
           switch (response.code) {
             case LoginResponseCodes.SUCCESS:
-              return new cog.LoginSuccessAction({ redirectUrl });
+              return new cog.LoginSuccessAction({ user: response.user, redirectUrl });
             case LoginResponseCodes.INVALID_CREDENTIALS:
               return new cog.LoginFailureAction({ errorMessage: 'Incorrect username or password' });
             case LoginResponseCodes.MFA_REQUIRED:
@@ -62,9 +62,34 @@ export class CognitoEffects {
     })
   );
 
-  loginSuccess$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.LOGIN_SUCCESS)).subscribe(_ => {
-    this.router.navigate([this.config.loginDidSucceedUrl]);
-  });
+  @Effect()
+  loginSuccess$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.LOGIN_SUCCESS)).pipe(
+    tap(_ => this.router.navigate([this.config.loginDidSucceedUrl])),
+    switchMap(_ => {
+      return of(new cog.GetUserAttributesAction());
+    })
+  );
+
+  @Effect()
+  rememberUserLoginSuccess$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.INIT_AUTH_USER_REMEMBERED)).pipe(
+    tap(_ => this.router.navigate([this.config.loginDidSucceedUrl])),
+    switchMap(_ => {
+      return of(new cog.GetUserAttributesAction());
+    })
+  );
+
+  @Effect()
+  getUserAttributes$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.GET_USER_ATTRIBUTES)).pipe(
+    withLatestFrom(this.cognitoFacade.cognitoUser$),
+    switchMap(([_, user]) => {
+      return this.cognitoService.getUserAttributes(user).pipe(
+        map((attributes: { [key: string]: any }) => {
+          return new cog.GetUserAttributesSuccessAction({ attributes });
+        }),
+        catchError(errorMessage => of(new cog.GetUserAttributesFailureAction({ errorMessage })))
+      );
+    })
+  );
 
   @Effect()
   signup$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.SIGNUP)).pipe(
@@ -117,7 +142,7 @@ export class CognitoEffects {
             const errMsg = response.errorMessage ? response.errorMessage : 'Error submitting confirmation code';
             return new cog.SubmitConfirmationCodeFailureAction({ errorMessage: errMsg });
           } else {
-            return new cog.SubmitConfirmationCodeSuccessAction();
+            return new cog.SubmitConfirmationCodeSuccessAction({ user: response.user });
           }
         }),
         catchError(err => of(new cog.SubmitConfirmationCodeFailureAction({ errorMessage: err })))
@@ -141,7 +166,7 @@ export class CognitoEffects {
           if (response.code === LoginResponseCodes.MFA_REQUIRED) {
             return new cog.SubmitMFACodeFailureInvalidAction({ errorMessage: 'Code invalid' });
           } else {
-            return new cog.SubmitMFACodeSuccessAction();
+            return new cog.SubmitMFACodeSuccessAction({ user: response.user });
           }
         }),
         catchError(err => of(new cog.SubmitMFACodeFailureInvalidAction({ errorMessage: err })))

@@ -59,3 +59,21 @@ export const getIsLoadingNewPassword = createSelector(
   getCognitoState,
   state => state.isLoading.newPassword
 );
+export const getIsLoadingAttributes = createSelector(
+  getCognitoState,
+  state => state.isLoading.attributes
+);
+export const getUserAttributes = createSelector(
+  getCognitoState,
+  state => state.userAttributes
+);
+export const getUserId = createSelector(
+  getUserAttributes,
+  attrs => {
+    if (attrs['sub']) {
+      return attrs['sub'];
+    } else {
+      return null;
+    }
+  }
+);
