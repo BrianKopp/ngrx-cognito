@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   cognitoAppClientId: '',
-  cognitoUserPoolId: ''
+  cognitoUserPoolId: '',
+  identityPoolId: '',
+  region: ''
 };
 
 /*
