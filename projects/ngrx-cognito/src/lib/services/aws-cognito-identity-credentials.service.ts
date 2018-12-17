@@ -1,5 +1,5 @@
 import { Injectable, Inject, OnInit, OnDestroy } from '@angular/core';
-import { CognitoConfigService } from 'ngrx-cognito/lib/services/cognito-config.service';
+import { CognitoConfigService } from './cognito-config.service';
 import { CognitoConfig } from '../model';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { CognitoFacade } from '../state/cognito.facade';
