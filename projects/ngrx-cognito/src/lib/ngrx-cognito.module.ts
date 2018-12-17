@@ -9,6 +9,7 @@ import { CognitoConfigService } from './services/cognito-config.service';
 import { CognitoConfig } from './model';
 import { cognitoReducer } from './state/cognito.reducer';
 import { CognitoEffects } from './state/cognito.effects';
+import { AwsCognitoIdentityCredentialsService } from './services/aws-cognito-identity-credentials.service';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ export class NgrxCognitoModule {
         RequireLoggedOutGuardService,
         CognitoFacade,
         RouterModule,
+        AwsCognitoIdentityCredentialsService,
         { provide: CognitoConfigService, useValue: scrubbedConfig }
       ]
     };
