@@ -150,11 +150,15 @@ export class CognitoEffects {
     })
   );
 
-  submitConfirmationCodeSuccess$ = this.actions$
-    .pipe(ofType(cog.CognitoActionTypes.SUBMIT_CONFIRMATION_CODE_SUCCESS))
-    .subscribe((_: cog.SubmitConfirmationCodeSuccessAction) => {
+  @Effect()
+  submitConfirmationCodeSuccess$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.SUBMIT_CONFIRMATION_CODE_SUCCESS)).pipe(
+    tap(_ => {
       this.router.navigate([this.config.loginDidSucceedUrl]);
-    });
+    }),
+    switchMap(_ => {
+      return of(new cog.GetUserAttributesAction());
+    })
+  );
 
   @Effect()
   submitMfaCode$ = this.actions$.pipe(ofType(cog.CognitoActionTypes.SUBMIT_MFA)).pipe(
