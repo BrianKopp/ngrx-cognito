@@ -70,7 +70,7 @@ export const getUserAttributes = createSelector(
 export const getUserId = createSelector(
   getUserAttributes,
   attrs => {
-    if (attrs['sub']) {
+    if (attrs && attrs['sub']) {
       return attrs['sub'];
     } else {
       return null;
