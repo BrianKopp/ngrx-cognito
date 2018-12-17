@@ -20,6 +20,8 @@ export class NgrxCognitoModule {
   static forRoot(cognitoConfig: CognitoConfig): ModuleWithProviders {
     const scrubbedConfig: CognitoConfig = {
       ...cognitoConfig,
+      region: cognitoConfig.region,
+      identityPoolId: cognitoConfig.identityPoolId,
       loginRequiredUrl: cognitoConfig.loginRequiredUrl || '/login',
       loginDidSucceedUrl: cognitoConfig.loginDidSucceedUrl || '/',
       logoutRequiredUrl: cognitoConfig.logoutRequiredUrl || '/',
