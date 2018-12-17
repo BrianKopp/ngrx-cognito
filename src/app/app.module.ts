@@ -38,6 +38,8 @@ import { ProtectedComponent } from './components/protected/protected.component';
     StoreModule.forRoot(appReducers, { metaReducers }),
     EffectsModule.forRoot([]),
     NgrxCognitoModule.forRoot({
+      region: environment.region,
+      identityPoolId: environment.identityPoolId,
       cognitoAppClientId: environment.cognitoAppClientId,
       cognitoUserPoolId: environment.cognitoUserPoolId,
       loginDidSucceedUrl: '/protected',
