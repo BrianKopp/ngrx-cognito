@@ -67,13 +67,3 @@ export const getUserAttributes = createSelector(
   getCognitoState,
   state => state.userAttributes
 );
-export const getUserId = createSelector(
-  getUserAttributes,
-  attrs => {
-    if (attrs && attrs['sub']) {
-      return attrs['sub'];
-    } else {
-      return null;
-    }
-  }
-);

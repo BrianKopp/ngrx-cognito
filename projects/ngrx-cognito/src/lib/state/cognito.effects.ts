@@ -40,6 +40,11 @@ export class CognitoEffects {
     }),
     switchMap(({ username, password, redirectUrl }) => {
       return this.cognitoService.loginUser(username, password).pipe(
+        tap(response => {
+          if (response.code === LoginResponseCodes.SUCCESS) {
+            this.store.dispatch(new cog.SetTokensAction({ idToken: response.idToken, accessToken: response.accessToken }));
+          }
+        }),
         map(response => {
           switch (response.code) {
             case LoginResponseCodes.SUCCESS:
@@ -184,10 +189,14 @@ export class CognitoEffects {
       map((response: LoadUserFromStorageResponse) => {
         if (response.user && response.accessToken && response.idToken) {
           this.store.dispatch(
-            new cog.InitAuthUserRememberedAction({
-              user: response.user,
+            new cog.SetTokensAction({
               accessToken: response.accessToken,
               idToken: response.idToken
+            })
+          );
+          this.store.dispatch(
+            new cog.InitAuthUserRememberedAction({
+              user: response.user
             })
           );
         }

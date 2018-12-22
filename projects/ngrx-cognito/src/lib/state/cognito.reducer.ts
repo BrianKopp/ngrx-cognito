@@ -57,9 +57,13 @@ export function cognitoReducer(state = initialState, action: CognitoActions): Co
         ...state,
         authDetails: null,
         cognitoState: CognitoStates.LOGGED_IN,
-        user: action.payload.user,
-        accessToken: action.payload.accessToken,
-        idToken: action.payload.idToken
+        user: action.payload.user
+      };
+    case CognitoActionTypes.SET_TOKENS:
+      return {
+        ...state,
+        idToken: action.payload.idToken,
+        accessToken: action.payload.accessToken
       };
     case CognitoActionTypes.LOGIN_SUCCESS:
       return {

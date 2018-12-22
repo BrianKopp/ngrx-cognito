@@ -4,11 +4,13 @@ import { AppComponent } from './app.component';
 import { CognitoFacade } from 'ngrx-cognito';
 import { StoreModule } from '@ngrx/store';
 
+class MockCognitoFacade {}
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, StoreModule.forRoot([])],
-      providers: [CognitoFacade],
+      providers: [{ provide: CognitoFacade, useClass: MockCognitoFacade }],
       declarations: [AppComponent]
     }).compileComponents();
   }));

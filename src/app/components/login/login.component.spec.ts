@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CognitoFacade } from 'ngrx-cognito';
 import { StoreModule } from '@ngrx/store';
 
+class MockCognitoFacade {}
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -14,7 +16,7 @@ describe('LoginComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, StoreModule.forRoot([])],
-      providers: [CognitoFacade],
+      providers: [{ provide: CognitoFacade, useClass: MockCognitoFacade }],
       declarations: [LoginComponent, LoginFormComponent, ConfirmationCodeFormComponent]
     }).compileComponents();
   }));

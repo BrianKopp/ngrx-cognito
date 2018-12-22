@@ -7,6 +7,8 @@ import { CognitoFacade } from 'ngrx-cognito';
 import { SignupFormComponent } from '../signup-form/signup-form.component';
 import { ConfirmationCodeFormComponent } from '../confirmation-code-form/confirmation-code-form.component';
 
+class MockCognitoFacade {}
+
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
@@ -14,7 +16,7 @@ describe('SignupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, StoreModule.forRoot([])],
-      providers: [CognitoFacade],
+      providers: [{ provide: CognitoFacade, useClass: MockCognitoFacade }],
       declarations: [SignupComponent, SignupFormComponent, ConfirmationCodeFormComponent]
     }).compileComponents();
   }));

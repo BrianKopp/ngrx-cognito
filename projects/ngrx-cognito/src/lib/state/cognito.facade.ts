@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { CognitoState } from './cognito.reducer';
 import {
@@ -15,19 +15,19 @@ import {
   getIsLoadingNewPassword,
   getCognitoCurrentStateIsLoggedIn,
   getUserAttributes,
-  getIsLoadingAttributes,
-  getUserId
+  getIsLoadingAttributes
 } from './cognito.selectors';
 import { LoginAction, SubmitConfirmationCodeAction, SignupAction, LogoutAction } from './cognito.actions';
 // imported explicitly for build
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { CognitoUser } from 'amazon-cognito-identity-js';
-import { CognitoStates } from '../model';
+import { CognitoStates, CognitoConfig } from '../model';
+import { AwsCognitoIdentityCredentials } from '../model/aws-cognito-identity-credentials';
+import { CognitoConfigService } from '../services/cognito-config.service';
 
 @Injectable()
 export class CognitoFacade {
   cognitoUser$ = this.store.pipe(select(getUser));
-  userId$ = this.store.pipe(select(getUserId));
   userAttributes$ = this.store.pipe(select(getUserAttributes));
   errorMessage$ = this.store.pipe(select(getErrorMessage));
   accessToken$ = this.store.pipe(select(getAccessToken));
@@ -41,7 +41,23 @@ export class CognitoFacade {
   isLoadingLogout$ = this.store.pipe(select(getIsLoadingLogout));
   isLoadingNewPassword$ = this.store.pipe(select(getIsLoadingNewPassword));
   isLoadingAttributes$ = this.store.pipe(select(getIsLoadingAttributes));
-  constructor(private store: Store<CognitoState>) {}
+
+  private credentialsSubject = new BehaviorSubject<AwsCognitoIdentityCredentials>(null);
+  awsCognitoCredentials$ = this.credentialsSubject.asObservable();
+  constructor(private store: Store<CognitoState>, @Inject(CognitoConfigService) private config: CognitoConfig) {
+    this.idToken$.subscribe(idToken => {
+      if (idToken) {
+        const logins: { [key: string]: string } = {};
+        logins[`cognito-idp.${this.config.region}.amazonaws.com/${this.config.cognitoUserPoolId}`] = idToken;
+        this.credentialsSubject.next({
+          IdentityPoolId: this.config.identityPoolId,
+          Logins: logins
+        });
+      } else {
+        this.credentialsSubject.next(null);
+      }
+    });
+  }
 
   loginUser(username: string, password: string) {
     this.store.dispatch(new LoginAction({ username, password }));

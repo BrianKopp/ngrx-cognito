@@ -4,6 +4,8 @@ import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 export enum CognitoActionTypes {
   INIT_AUTH_USER_REMEMBERED = '[Cognito] Init Auth User Remembered',
 
+  SET_TOKENS = '[Cognito] Set Tokens',
+
   LOGIN = '[Cognito] Login',
   LOGIN_WAITING = '[Cognito] Login Waiting',
   LOGIN_SUCCESS = '[Cognito] Login Success',
@@ -39,9 +41,13 @@ export enum CognitoActionTypes {
 }
 export class InitAuthUserRememberedAction implements Action {
   readonly type = CognitoActionTypes.INIT_AUTH_USER_REMEMBERED;
-  constructor(public payload: { user: CognitoUser; accessToken: string; idToken: string }) {}
+  constructor(public payload: { user: CognitoUser }) {}
 }
 
+export class SetTokensAction implements Action {
+  readonly type = CognitoActionTypes.SET_TOKENS;
+  constructor(public payload: { accessToken: string; idToken: string }) {}
+}
 export class LoginAction implements Action {
   readonly type = CognitoActionTypes.LOGIN;
   constructor(public payload: { username: string; password: string; redirectUrl?: string }) {}
@@ -169,6 +175,7 @@ export class LogoutSuccessAction implements Action {
 
 export type CognitoActions =
   | InitAuthUserRememberedAction
+  | SetTokensAction
   | LoginAction
   | LoginWaitingAction
   | LoginSuccessAction
